@@ -1,8 +1,8 @@
 """init
 
-Revision ID: 35bb217dda8f
+Revision ID: 13cf925f18e4
 Revises: 
-Create Date: 2022-05-31 17:42:16.999669
+Create Date: 2022-05-31 20:33:05.933395
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision = '35bb217dda8f'
+revision = '13cf925f18e4'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -26,7 +26,7 @@ def upgrade():
     sa.Column('is_admin', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=False)
+    op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=True)
     # ### end Alembic commands ###
 
 

@@ -7,4 +7,5 @@ Create `.env` file
 
 ## Run
 1. `pip install -r requirements.txt`
-2. `python main.py`
+2. `alembic upgrade head`
+3. `python main.py`
