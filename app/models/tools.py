@@ -6,4 +6,8 @@ class Message(SQLModel):
     message: str = Field(..., description="Full error message")
 
 
-responses = {400: {"model": Message}}
+class ErrorMessage(SQLModel):
+    detail: Message = Field(...)
+
+
+responses = {400: {"model": ErrorMessage}}
