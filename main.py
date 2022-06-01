@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from sqlmodel import Session, SQLModel, create_engine, select
 
-from models import User, UserIn, UserOut, responses
+from app.models import User, UserIn, UserOut, responses
 
 env = Env()
 env.read_env()
@@ -42,4 +42,4 @@ def create_user(payload: UserIn) -> User | JSONResponse:
 
 if __name__ == "__main__":
     create_db_and_tables()
-    uvicorn.run("main:app", host="localhost", port=8000, reload=True, workers=2)
+    uvicorn.run("main:app", host="localhost", port=8000, reload=True)

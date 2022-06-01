@@ -6,7 +6,7 @@ from environs import Env
 from sqlmodel import SQLModel
 
 from main import engine
-from models import *
+from app.models import *
 
 env = Env()
 env.read_env()
