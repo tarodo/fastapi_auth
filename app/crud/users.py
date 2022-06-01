@@ -1,7 +1,8 @@
-from app.models import User, UserIn
-from sqlmodel import select
-from app.db import session
 from fastapi.encoders import jsonable_encoder
+from sqlmodel import select
+
+from app.db import session
+from app.models import User, UserIn
 
 
 def read_by_email(email: str) -> User | None:

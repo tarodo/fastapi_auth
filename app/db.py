@@ -1,13 +1,8 @@
-import os
-
-from environs import Env
 from sqlmodel import Session, SQLModel, create_engine
 
-env = Env()
-env.read_env()
+from app.core.config import settings
 
-DB_URL = os.getenv("DB_URL")
-engine = create_engine(DB_URL, echo=True)
+engine = create_engine(settings.DB_URL, echo=True)
 session = Session(bind=engine)
 
 

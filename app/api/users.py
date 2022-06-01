@@ -2,7 +2,6 @@ from enum import Enum
 
 from fastapi import APIRouter
 
-
 from app.api.tools import raise_400
 from app.crud import users
 from app.models import User, UserIn, UserOut, responses
