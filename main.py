@@ -1,24 +1,18 @@
 import uvicorn
 from fastapi import FastAPI
 
-from app.api import users
-from app.db import create_db_and_tables
+from app.api import login, users
 
 
 def create_application() -> FastAPI:
     application = FastAPI()
     application.include_router(users.router, prefix="/users", tags=["users"])
+    application.include_router(login.router, tags=["login"])
     return application
 
 
 app = create_application()
 
 
-@app.get("/")
-def hello():
-    return "Hi!"
-
-
 if __name__ == "__main__":
-    create_db_and_tables()
     uvicorn.run("main:app", host="localhost", port=8000, reload=True)

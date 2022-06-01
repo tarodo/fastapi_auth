@@ -1,21 +1,38 @@
-from fastapi.encoders import jsonable_encoder
-from sqlmodel import select
+from sqlmodel import Session, select
 
-from app.db import session
+from app.core.security import get_password_hash, verify_password
 from app.models import User, UserIn
 
 
-def read_by_email(email: str) -> User | None:
+def read_by_email(db: Session, email: str) -> User | None:
     """Read one user by email"""
     user = select(User).where(User.email == email)
-    user = session.exec(user).one_or_none()
+    user = db.exec(user).one_or_none()
     return user
 
 
-def create(payload: UserIn) -> User:
-    """Create user"""
-    user = User(**jsonable_encoder(payload))
-    session.add(user)
-    session.commit()
-    session.refresh(user)
+def read_by_id(db: Session, user_id: int) -> User | None:
+    """Read one user by id"""
+    user = select(User).where(User.id == user_id)
+    user = db.exec(user).one_or_none()
+    return user
+
+
+def create(db: Session, payload: UserIn) -> User:
+    """Create a user"""
+    password_hashed = get_password_hash(payload.password)
+    user = User(email=payload.email, password=password_hashed)
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+def authenticate(db: Session, email: str, password: str) -> User | None:
+    """Authenticate user by checking its password"""
+    user = read_by_email(db, email=email)
+    if not user:
+        return None
+    if not verify_password(password, user.password):
+        return None
     return user
