@@ -7,7 +7,7 @@ from app.models import User, UserIn
 def read_by_email(db: Session, email: str) -> User | None:
     """Read one user by email"""
     user = select(User).where(User.email == email)
-    user = db.exec(user).one_or_none()
+    user = db.exec(user).first()
     return user
 
 

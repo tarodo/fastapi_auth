@@ -1,4 +1,4 @@
-from sqlmodel import Field, SQLModel
+from sqlmodel import SQLModel
 
 
 class Token(SQLModel):
@@ -7,4 +7,4 @@ class Token(SQLModel):
 
 
 class TokenPayload(SQLModel):
-    sub: int | None = None
+    sub: int
