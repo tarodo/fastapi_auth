@@ -1,7 +1,8 @@
+from fastapi.encoders import jsonable_encoder
 from sqlmodel import Session, select
 
 from app.core.security import get_password_hash, verify_password
-from app.models import User, UserIn
+from app.models import User, UserIn, UserUpdate
 
 
 def read_by_email(db: Session, email: str) -> User | None:
@@ -26,6 +27,26 @@ def create(db: Session, payload: UserIn) -> User:
     db.commit()
     db.refresh(user)
     return user
+
+
+def update(db: Session, db_obj: User , payload: UserUpdate) -> User:
+    """Update user's data"""
+    obj_data = jsonable_encoder(db_obj)
+    if isinstance(payload, dict):
+        update_data = payload
+    else:
+        update_data = payload.dict(exclude_unset=True, exclude_none=True)
+    print(f"{update_data=}")
+    for field in obj_data:
+        if field in update_data:
+            new_data = update_data[field]
+            if field == "password":
+                new_data = get_password_hash(update_data["password"])
+            setattr(db_obj, field, new_data)
+    db.add(db_obj)
+    db.commit()
+    db.refresh(db_obj)
+    return db_obj
 
 
 def authenticate(db: Session, email: str, password: str) -> User | None:

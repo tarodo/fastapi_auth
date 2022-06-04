@@ -18,3 +18,9 @@ class UserIn(UserBase):
 
 class UserOut(UserBase):
     id: int = Field(...)
+
+
+class UserUpdate(SQLModel):
+    email: EmailStr | None = None
+    is_admin: bool | None = None
+    password: str | None = None

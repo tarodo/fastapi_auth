@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     DB_URL: str = "sqlite:///db_test.db"
 
+    EMAIL_TEST_USER: str = "test@test.com"
+
     class Config:
         case_sensitive = True
 

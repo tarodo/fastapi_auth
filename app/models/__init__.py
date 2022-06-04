@@ -1,2 +1,2 @@
 from .tools import responses
-from .users import User, UserIn, UserOut
+from .users import User, UserIn, UserOut, UserUpdate
