@@ -36,7 +36,6 @@ def update(db: Session, db_obj: User , payload: UserUpdate) -> User:
         update_data = payload
     else:
         update_data = payload.dict(exclude_unset=True, exclude_none=True)
-    print(f"{update_data=}")
     for field in obj_data:
         if field in update_data:
             new_data = update_data[field]

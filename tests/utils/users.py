@@ -41,8 +41,6 @@ def authentication_token_from_email(
         user = users.create(db, user_in_create)
     else:
         user_in_update = UserUpdate(password=password)
-        print(f"{user_in_update=}")
-        print(f"{user=}")
         user = users.update(db, db_obj=user, payload=user_in_update)
 
     return user_authentication_headers(client=client, email=email, password=password)
