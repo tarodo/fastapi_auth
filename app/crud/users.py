@@ -21,21 +21,19 @@ def read_by_id(db: Session, user_id: int) -> User | None:
 
 def create(db: Session, payload: UserIn) -> User:
     """Create a user"""
+    user = User(**payload.dict())
     password_hashed = get_password_hash(payload.password)
-    user = User(email=payload.email, password=password_hashed)
+    user.password = password_hashed
     db.add(user)
     db.commit()
     db.refresh(user)
     return user
 
 
-def update(db: Session, db_obj: User , payload: UserUpdate) -> User:
+def update(db: Session, db_obj: User, payload: UserUpdate) -> User:
     """Update user's data"""
     obj_data = jsonable_encoder(db_obj)
-    if isinstance(payload, dict):
-        update_data = payload
-    else:
-        update_data = payload.dict(exclude_unset=True, exclude_none=True)
+    update_data = payload.dict(exclude_unset=True, exclude_none=True)
     for field in obj_data:
         if field in update_data:
             new_data = update_data[field]
