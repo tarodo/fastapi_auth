@@ -11,6 +11,7 @@ from tests.utils.utils import random_lower_string, random_email
 def user_authentication_headers(
     *, client: TestClient, email: str, password: str
 ) -> Dict[str, str]:
+    """Return headers for the creds"""
     data = {"username": email, "password": password}
     r = client.post(f"/login/access-token", data=data)
     response = r.json()
@@ -20,6 +21,7 @@ def user_authentication_headers(
 
 
 def create_random_user(db: Session) -> User:
+    """Return new user with random email and pass"""
     email = random_email()
     password = random_lower_string()
     user_in = UserIn(username=email, email=email, password=password)

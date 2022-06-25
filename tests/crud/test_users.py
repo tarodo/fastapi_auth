@@ -65,6 +65,11 @@ def test_user_read_by_id(db: Session) -> None:
     assert jsonable_encoder(user) == jsonable_encoder(user_test)
 
 
+def test_user_read_by_wrong_id(db: Session) -> None:
+    user_test = users.read_by_id(db, 666)
+    assert not user_test
+
+
 def test_user_read_by_email(db: Session) -> None:
     email = random_email()
     password = random_lower_string()
@@ -76,15 +81,33 @@ def test_user_read_by_email(db: Session) -> None:
     assert jsonable_encoder(user) == jsonable_encoder(user_test)
 
 
-def test_user_update(db: Session) -> None:
+def test_user_read_by_wrong_email(db: Session) -> None:
+    user_test = users.read_by_email(db, random_email())
+    assert not user_test
+
+
+def test_user_update_password(db: Session) -> None:
     email = random_email()
     password = random_lower_string()
-    user_in = UserIn(email=email, password=password, is_admin=False)
+    user_in = UserIn(email=email, password=password)
     user = users.create(db, payload=user_in)
     new_password = random_lower_string()
-    user_in_update = UserUpdate(password=new_password, is_admin=True)
+    user_in_update = UserUpdate(password=new_password)
     users.update(db, user, payload=user_in_update)
     user_test = users.read_by_id(db, user.id)
     assert user_test
     assert user.email == user_test.email
     assert verify_password(new_password, user_test.password)
+
+
+def test_user_update_is_admin(db: Session) -> None:
+    email = random_email()
+    password = random_lower_string()
+    user_in = UserIn(email=email, password=password, is_admin=False)
+    user = users.create(db, payload=user_in)
+    user_in_update = UserUpdate(is_admin=True)
+    users.update(db, user, payload=user_in_update)
+    user_test = users.read_by_id(db, user.id)
+    assert user_test
+    assert user.email == user_test.email
+    assert user.is_admin
