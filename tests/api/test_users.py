@@ -1,5 +1,3 @@
-from typing import Dict
-
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
@@ -11,7 +9,7 @@ from tests.utils.utils import random_email, random_lower_string
 
 
 def test_get_users_normal_user_me(
-    client: TestClient, user_token_headers: Dict[str, str]
+    client: TestClient, user_token_headers: dict[str, str]
 ) -> None:
     r = client.get(f"/users/me", headers=user_token_headers)
     current_user = r.json()
@@ -26,7 +24,7 @@ def test_unauth_user(client: TestClient) -> None:
 
 
 def test_create_user_new_email(
-    client: TestClient, user_token_headers: Dict[str, str], db: Session
+    client: TestClient, user_token_headers: dict[str, str], db: Session
 ) -> None:
     email = random_email()
     password = random_lower_string()
@@ -40,7 +38,7 @@ def test_create_user_new_email(
 
 
 def test_create_user_existing_email(
-    client: TestClient, user_token_headers: Dict[str, str], db: Session
+    client: TestClient, user_token_headers: dict[str, str], db: Session
 ) -> None:
     email = random_email()
     password = random_lower_string()
