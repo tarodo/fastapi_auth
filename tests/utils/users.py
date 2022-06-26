@@ -5,7 +5,7 @@ from sqlmodel import Session
 
 from app.crud import users
 from app.models import User, UserIn, UserUpdate
-from tests.utils.utils import random_lower_string, random_email
+from tests.utils.utils import random_email, random_lower_string
 
 
 def user_authentication_headers(

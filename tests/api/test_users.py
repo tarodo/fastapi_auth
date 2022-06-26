@@ -11,7 +11,7 @@ from tests.utils.utils import random_email, random_lower_string
 
 
 def test_get_users_normal_user_me(
-        client: TestClient, user_token_headers: Dict[str, str]
+    client: TestClient, user_token_headers: Dict[str, str]
 ) -> None:
     r = client.get(f"/users/me", headers=user_token_headers)
     current_user = r.json()
@@ -20,14 +20,13 @@ def test_get_users_normal_user_me(
     assert current_user["email"] == settings.EMAIL_TEST_USER
 
 
-def test_unauth_user(
-        client: TestClient) -> None:
+def test_unauth_user(client: TestClient) -> None:
     r = client.get(f"/users/me", headers={})
     assert r.status_code == 401
 
 
 def test_create_user_new_email(
-        client: TestClient, user_token_headers: Dict[str, str], db: Session
+    client: TestClient, user_token_headers: Dict[str, str], db: Session
 ) -> None:
     email = random_email()
     password = random_lower_string()
@@ -41,7 +40,7 @@ def test_create_user_new_email(
 
 
 def test_create_user_existing_email(
-        client: TestClient, user_token_headers: Dict[str, str], db: Session
+    client: TestClient, user_token_headers: Dict[str, str], db: Session
 ) -> None:
     email = random_email()
     password = random_lower_string()
