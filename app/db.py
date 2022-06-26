@@ -3,7 +3,7 @@ from sqlmodel.sql.expression import Select, SelectOfScalar
 
 from app.core.config import settings
 
-engine = create_engine(settings.DB_URL, connect_args={"check_same_thread": False})
+engine = create_engine(settings.DB_URL, echo=True)
 session = Session(bind=engine)
 SelectOfScalar.inherit_cache = True
 Select.inherit_cache = True
