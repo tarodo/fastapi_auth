@@ -111,3 +111,14 @@ def test_user_update_is_admin(db: Session) -> None:
     assert user_test
     assert user.email == user_test.email
     assert user.is_admin
+
+
+def test_remove_user(db: Session) -> None:
+    email = random_email()
+    password = random_lower_string()
+    user_in = UserIn(email=email, password=password, is_admin=False)
+    user = users.create(db, payload=user_in)
+    user_remove = users.remove(db, user)
+    user_test = users.read_by_id(db, user.id)
+    assert not user_test
+    assert user_remove == user

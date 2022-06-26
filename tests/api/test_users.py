@@ -1,10 +1,12 @@
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
+from app.api.deps import DepsErrors
 from app.api.users import UsersErrors
 from app.core.config import settings
 from app.crud import users
 from app.models import UserIn
+from tests.utils.users import user_authentication_headers
 from tests.utils.utils import random_email, random_lower_string
 
 
@@ -21,6 +23,28 @@ def test_get_users_normal_user_me(
 def test_unauth_user(client: TestClient) -> None:
     r = client.get(f"/users/me", headers={})
     assert r.status_code == 401
+
+
+def test_wrong_token(client: TestClient) -> None:
+    r = client.get(f"/users/me", headers={"Authorization": f"Bearer 1111"})
+    current_user = r.json()
+    assert r.status_code == 400
+    assert current_user["detail"]["err"] == str(DepsErrors.NotValidCredentials)
+
+
+def test_nonexistent_user(client: TestClient, db: Session) -> None:
+    email = random_email()
+    password = random_lower_string()
+    user_in = UserIn(email=email, password=password)
+    user = users.create(db, payload=user_in)
+
+    headers = user_authentication_headers(client=client, email=email, password=password)
+    users.remove(db, user)
+
+    r = client.get(f"/users/me", headers=headers)
+    current_user = r.json()
+    assert r.status_code == 400
+    assert current_user["detail"]["err"] == str(DepsErrors.UserNotFound)
 
 
 def test_create_user_new_email(

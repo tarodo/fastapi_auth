@@ -46,6 +46,13 @@ def update(db: Session, db_obj: User, payload: UserUpdate) -> User:
     return db_obj
 
 
+def remove(db: Session, db_obj: User) -> User:
+    """Remove user from DB"""
+    db.delete(db_obj)
+    db.commit()
+    return db_obj
+
+
 def authenticate(db: Session, email: str, password: str) -> User | None:
     """Authenticate user by checking its password"""
     user = read_by_email(db, email=email)
