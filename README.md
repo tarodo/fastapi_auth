@@ -4,6 +4,12 @@ Clear project with auth model
 ## .env
 Create `.env` file
 - DB_URL - str, url for db. For example, `sqlite:///db.db`
+- POSTGRES_USER - str
+- POSTGRES_PASSWORD - str
+
+Create `db/.env` file
+- POSTGRES_USER - str
+- POSTGRES_PASSWORD - str
 
 ## Test
 1. `python -m pytest --cov="."`
